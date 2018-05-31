@@ -1,0 +1,153 @@
+﻿<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </meta>
+    <title>JavaRush TestProject for Internship - Author Solenoid</title>
+
+</head>
+
+
+<body ng-app="NoteManager" ng-controller="NoteController">
+
+    <font face="Arial" size="3">
+    <div id="homediv">
+
+
+        <div id="top">
+            <center><b>JavaRush - Тестовое задание для стажировки &#160; // &#160;
+                Notes-list, для отображения списка заметок &#160; // &#160;
+                Автор Solenoid </b>
+            </center>
+            <br/> <br/>
+        </div>
+
+
+        <div id="left">
+        </div>
+
+
+        <div id="center">
+
+            <b> <a class="create-button" ng-click="createNote()">Создать новую заметку</a> </b>
+            &#160; или &#160; Pедактировать существующую заметку ( Edit )
+
+            <br/> <br/>
+            <form ng-submit="submitNote()">
+                <table border="0" width="100%">
+                    <tr>
+                        <td width="150px">Id заметки</td>
+                        <td>{{noteForm.noteid}}</td>
+                    </tr>
+                    <tr>
+                        <td>Заметка</td>
+                        <td><input class="fullWidth" type="text" ng-model="noteForm.notenote"/></td>
+                    </tr>
+                    <tr>
+                        <td>Выполнение</td>
+                        <td><input type="checkbox" ng-model="noteForm.notedone" ng-true-value="true"
+                                   ng-false-value="false" ng-change="change()"> </input>   </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="Сохранить" class="blue-button"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <br/> <br/>
+
+            </form>
+
+
+            <table width="100%">
+
+                <thead>
+                    <tr>
+                        <th valign="top"> Id </th>
+                        <th valign="top" width="50%">Заметка</th>
+
+                        <th align="left" valign="top">
+                            Выполнение
+                            <div ng-repeat="choise in choiseArray">
+                                <label ng-click="selectedSole()">
+                                    <input type="radio" ng-value="choise" ng-model="$parent.selectedChoise"/>
+                                    {{choise.name}}
+                                </label>
+                            </div>
+                        </th>
+
+                        <th valign="top" align="left">Дата создания
+                            <div ng-repeat="choiseDate in choiseDateArray">
+                                <label ng-click="selectedSoleDate()">
+                                    <input type="radio" ng-value="choiseDate" ng-model="$parent.selectedChoiseDate"/>
+                                    {{choiseDate.name}} <!-- Output . name for je radiobutton -->
+                                </label>
+                            </div>
+                        </th>
+                        <th valign="top">Редактировать</th>
+                        <th valign="top">Удалить</th>
+                    </tr>
+
+                </thead>
+
+
+                <tr class="list-group-item" ng-repeat="note in notes
+                                        | filter:{notedone:selectedChoise2}
+                                        | orderBy:myDateFunction:selectedDateChoise
+                                        | startFrom: startingItem()
+                                        | limitTo: itemsPerPage">
+
+                    <td valign="top">
+                        <center> {{ note.noteid }}</center>
+                    </td>
+                    <td valign="top"> {{ note.notenote }}</td>
+                    <td valign="top">
+                        {{ note.notedone }}
+                    </td>
+                    <td valign="top">
+                        {{ note.notedate | date:'yyyy-MM-dd' }}
+                    </td>
+
+                    <td valign="top">
+                        <center>
+                            <a ng-click="editNote(note)">Edit</a></center>
+                    </td>
+
+                    <td valign="top">
+                        <center>
+                            <a ng-click="deleteNote(note)">Delete</a></center>
+                    </td>
+
+                </tr>
+            </table>
+
+            <br />
+
+            <div id="pagination" class="row">
+                <button class="pull-left btn btn-primary btn-sm" ng-disabled="firstPage()" ng-click="pageBack()">Назад</button>
+                <span>{{currentPage+1}} из {{numberOfPages()}}</span>
+                <button class="pull-right  btn btn-primary btn-sm" ng-disabled="lastPage()" ng-click="pageForward()">Вперед</button>
+            </div>
+
+        </div>
+
+
+        <div id="right">
+            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+            <br /> <br /> <br /> <br /> <br /><br /> <br /> <br /> <br /> <br />
+            <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+        </div>
+
+
+    </div>
+    </font>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+    <script th:src="@{/main.js}"></script>
+    <link th:href="@{/main.css}" rel="stylesheet"/>
+
+</body>
+</html>
